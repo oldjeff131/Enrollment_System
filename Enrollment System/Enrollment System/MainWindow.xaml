@@ -1,0 +1,112 @@
+﻿<Window x:Class="Enrollment_System.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:local="clr-namespace:Enrollment_System"
+ mc:Ignorable="d"
+ Title="學生選課系統" Height="599.462" Width="1341.44" Icon="/booksicon.png" Loaded="windows_Loaded">
+    <Grid Margin="0,0,2,1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="109*"/>
+            <ColumnDefinition Width="584*"/>
+            <ColumnDefinition Width="425*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="學生：" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top" Height="36" Width="62" FontSize="15" FontWeight="Bold"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="260" Height="30" Grid.ColumnSpan="2">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding StudentNum}" />
+                        <TextBlock Text="{Binding StudentName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TabControl HorizontalAlignment="Left" Height="450" Margin="10,51,0,0" VerticalAlignment="Top" Width="576" Grid.ColumnSpan="2">
+            <TabItem Header="以教師分類課程">
+                <Grid Background= "#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="157*"/>
+                        <ColumnDefinition Width="413*"/>
+                    </Grid.ColumnDefinitions>
+                    <TreeView x:Name="Teachertreeview" SelectedItemChanged="TeacherTreeSelectedItemChanged " Grid.ColumnSpan="2">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type local:TeachersName}" ItemsSource="{Binding Course}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="teachericon.png" Width="30"/>
+                                    <TextBlock Text="{Binding TeacherName}"/>
+                                    <TextBlock Text="["/>
+                                    <TextBlock Text="{Binding Course.Count}"/>
+                                    <TextBlock Text="]"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type local:Teacher}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="book.png" Width="30"/>
+                                    <TextBlock Text="{Binding CourseTitle}"/>
+                                    <TextBlock Text="{Binding Openingclass}"/>
+                                    <TextBlock Text="("/>
+                                    <TextBlock Text="{Binding Compulsory}"/>
+                                    <TextBlock Text="{Binding Credits}"/>
+                                    <TextBlock Text="學分)"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+                </Grid>
+            </TabItem>
+            <TabItem Header="所有課程列表">
+                <Grid Background= "#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="379*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Name="Teacherlistview" Grid.ColumnSpan="2" SelectionChanged="TeachersListViewSelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="任課教師" Width="60" DisplayMemberBinding="{Binding TeacherName}" />
+                                <GridViewColumn Header="課程名稱" Width="140" DisplayMemberBinding="{Binding CourseTitle}" />
+                                <GridViewColumn Header="學分數" Width="45" DisplayMemberBinding="{Binding Credits}" />
+                                <GridViewColumn Header="必選修" Width="70" DisplayMemberBinding="{Binding Compulsory}" />
+                                <GridViewColumn Header="開課班級" Width="120" DisplayMemberBinding="{Binding Openingclass}" />
+                                <GridViewColumn Header="上課時間" Width="100" DisplayMemberBinding="{Binding Classtime}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="AddButton" HorizontalAlignment="Left" Margin="464,78,0,0" VerticalAlignment="Top" Width="75" Height="75" Grid.Column="1" Click="AddButton_Click">
+            <Image Height="70" Width="70" Source="addicon.png" RenderTransformOrigin="-0.564,0.854"/>
+        </Button>
+        <Button x:Name="RemoveButton" HorizontalAlignment="Left" Margin="464,173,0,0" VerticalAlignment="Top" Width="75" Height="75" Grid.Column="1" Click="RemoveButton_Click">
+            <Image Height="70" Width="70" Source="/removeicon.png"/>
+        </Button>
+        <Button x:Name="save" HorizontalAlignment="Left" Margin="464,268,0,0" VerticalAlignment="Top" Width="75" Height="75" Grid.Column="1" Click="save_Click">
+            <Image Height="75" Width="75" Source="/saveicon.png" />
+        </Button>
+        <ListView x:Name="listRegistration" HorizontalAlignment="Left" Height="450" Margin="571,51,0,0" VerticalAlignment="Top" Width="579" SelectionChanged="listRegistrationSelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="學號" Width="75" DisplayMemberBinding="{Binding StudentID}" />
+                    <GridViewColumn Header="學生姓名" Width="60" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="授課老師" Width="60" DisplayMemberBinding="{Binding Instructor}" />
+                    <GridViewColumn Header="科目名稱" Width="140" DisplayMemberBinding="{Binding SubjectName}"/>
+                    <GridViewColumn Header="必選修" Width="70" DisplayMemberBinding="{Binding Compulsory}"/>
+                    <GridViewColumn Header="學分數" Width="45" DisplayMemberBinding="{Binding Credits}"/>
+                    <GridViewColumn Header="開課班級" Width="100" DisplayMemberBinding="{Binding OpeningClass}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StatusBar HorizontalAlignment="Left" Height="41" Margin="10,516,0,0" VerticalAlignment="Top" Width="1284" Grid.ColumnSpan="3">
+            <Label x:Name="StatusLable" Content="" Width="1171" FontSize="17"/>
+        </StatusBar>
+        <CheckBox x:Name="Elective" Content="選修" Grid.Column="1" HorizontalAlignment="Left" Margin="253,11,0,0" VerticalAlignment="Top" Height="20" Width="63" FontSize="16" Checked="Elective_Checked" Unchecked="Elective_Checked"/>
+        <CheckBox x:Name="Compulsory" Content="必修" Grid.Column="1" HorizontalAlignment="Left" Margin="321,11,0,0" VerticalAlignment="Top" Height="20" Width="63" FontSize="16" Checked="Compulsory_Checked" Unchecked="Compulsory_Checked"/>
+        <CheckBox x:Name="Departmentelective" Content="系定選修" Grid.Column="1" HorizontalAlignment="Left" Margin="389,10,0,0" VerticalAlignment="Top" Height="20" Width="96" FontSize="16" Checked="Departmentelective_Checked" Unchecked="Departmentelective_Checked"/>
+        <CheckBox x:Name="threeCredits" Content="3學分" Grid.Column="1" HorizontalAlignment="Left" Margin="389,31,0,0" VerticalAlignment="Top" Height="20" Width="64" FontSize="16" Checked="threeCredits_Checked" Unchecked="threeCredits_Checked"/>
+        <CheckBox x:Name="twoCredits" Content="2學分" Grid.Column="1" HorizontalAlignment="Left" Margin="321,31,0,0" VerticalAlignment="Top" Height="20" Width="63" FontSize="16" Checked="twoCredits_Checked" Unchecked="twoCredits_Checked"/>
+        <CheckBox x:Name="oneCredits" Content="1學分" Grid.Column="1" HorizontalAlignment="Left" Margin="253,31,0,0" VerticalAlignment="Top" Height="20" Width="63" FontSize="16" Checked="oneCredits_Checked" Unchecked="oneCredits_Checked"/>
+    </Grid>
+</Window>
